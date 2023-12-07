@@ -1,5 +1,42 @@
-from constants import *
 import pygame, sys, random
+
+# color and font codes
+BG_COLOR = (0, 0, 0)
+DIFF_FONT_COLOR = (0, 255, 0)
+FONT_COLOR = (255, 255, 255)
+START_MENU_FONT = 40
+GAME_OVER_FONT = 40
+FONT_SMALL = 35
+FONT_SMALLEST = 28
+
+# dimension constants
+INITIAL_WIDTH = 420
+INITIAL_HEIGHT = 420
+SQUARE_SIZE = 28
+INITIAL_TRAIL_X = 56
+INITIAL_TRAIL_Y = 196
+
+
+# difficulty classes to specify conditional constants
+class EasyConstants:
+    def __init__(self):
+        self.snake_color = (0, 255, 0)
+        self.apple_color = (255, 0, 0)
+        self.speed = 4
+
+
+class MediumConstants:
+    def __init__(self):
+        self.snake_color = (255, 255, 0)
+        self.apple_color = (255, 0, 0)
+        self.speed = 7
+
+
+class HardConstants:
+    def __init__(self):
+        self.snake_color = (255, 0, 0)
+        self.apple_color = (0, 255, 255)
+        self.speed = 10
 
 
 def draw_start_menu():
@@ -62,19 +99,21 @@ def draw_game_over(win):
 
 
 if __name__ == "__main__":
+    # initialize pygame
     pygame.init()
     screen = pygame.display.set_mode((INITIAL_WIDTH, INITIAL_HEIGHT))
     pygame.display.set_caption("Snake Game")
     screen.fill(BG_COLOR)
     draw_start_menu()
 
+    # game state variables
     high_score = 0
-
     system_running = True
     start_running = True
     game_running = False
     game_over = False
 
+    # event loop
     while system_running:
         while start_running and not game_over:
             for event in pygame.event.get():
@@ -127,12 +166,13 @@ if __name__ == "__main__":
         eat_apple = False
         win = False
 
+        # rects created to detect if a button is pressed
         pygame.draw.rect(screen, difficulty.snake_color, (INITIAL_TRAIL_X + 2, INITIAL_TRAIL_Y + 2, SQUARE_SIZE - 4, SQUARE_SIZE - 4))
         pygame.draw.rect(screen, difficulty.snake_color, (x_coordinate + 2, y_coordinate + 2, SQUARE_SIZE - 4, SQUARE_SIZE - 4))
         pygame.draw.rect(screen, difficulty.apple_color, (apple_x, apple_y, SQUARE_SIZE, SQUARE_SIZE))
 
+        # list of snake square positions in order to reprint snake each frame
         snake_position_list = [(84, 196), (INITIAL_TRAIL_X, INITIAL_TRAIL_Y)]
-
         grid_positions_starter = [[i for i in range(0, 393, 28)] for j in range(0, 393, 28)]
         grid_positions_list = []
         y_index = -1
